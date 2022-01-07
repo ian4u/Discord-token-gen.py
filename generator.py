@@ -8,7 +8,7 @@ import time
 
 delete = input("Do you want a new file with new tokens ? t/f \n")
 if delete == "t":
-    os.remove("tokens.txt")
+    os.remove("gentokens.txt")
     print("last got removed \n")
 else:
     print("the new codes will go on the same file as the last one \n")
@@ -26,7 +26,7 @@ while(int(count)<int(N)):
     token_2 = ''.join((random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') for i in range(4)))
     token_3 = ''.join((random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890') for i in range(27)))
     sixedgen=(token_1 + ".Yb" + token_2 + "." + token_3 )
-    f= open(current_path+"/"+str("tokens")+str("")+".txt","a")
+    f= open(current_path+"/"+str("gentokens")+str("")+".txt","a")
     f.write(firstGen+"\n"+secondGen+"\n"+thirdGen+"\n"+fourthGen+"\n"+fifthGen+"\n"+sixedgen+"\n")
     count+=1
 
@@ -46,23 +46,27 @@ def variant2_Status(token):
     if response.status_code == 200:
         print("")
 
+done = 0
+
 if __name__ == "__main__":
     try:
         checked = []
-        with open('tokens.txt', 'r') as tokens:
+        with open('gentokens.txt', 'r') as tokens:
             for token in tokens.read().split('\n'):
                 if len(token) > 15 and token not in checked and variant2(token) == True:
-                    print(f'[+] {token} Valid')
+                    done = done + 1
+                    print(f'[+] {token} Valid' + "    (" + str(done) + "/" + str(count * 6 - 6) + ")" + "  --- https://github.com/ian4u/Discord-token-gen.py/tree/main ---")
                     checked.append(token)
                 else:
-                    print(f'[-] {token} Invalid')
+                    print(f'[-] {token} Invalid' + "    (" + str(done) + "/" + str(count * 6 - 6) + ")" + "  --- https://github.com/ian4u/Discord-token-gen.py/tree/main ---")
+                    done = done + 1
         if len(checked) > 0:
             save = input(f'{len(checked)} valid tokens\nSave to File (y/n)').lower()
             if save == 'y':
-                name = randint(100000000, 9999999999)
+                name = "tokens"
                 with open(f'{name}.txt', 'w') as saveFile:
                     saveFile.write('\n'.join(checked))
                 print(f'Tokens Save To {name}.txt File!')
         input('Press Enter For Exit...')
     except:
-        input('Can`t Open "tokens.txt" File!')
+        input('Can`t Open "gentokens.txt" File!')
